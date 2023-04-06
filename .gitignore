@@ -1,8 +1,10 @@
 Client/Library/
 Client/Logs/
 Client/Temp/
+Client/obj/
 
 *.csproj
+.idea
 
 
 //QFramework的参考
