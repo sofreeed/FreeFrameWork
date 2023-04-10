@@ -15,6 +15,7 @@ public partial class Tables
 {
     public item.TbItem TbItem {get; }
     public template.TbBase_1 TbBase_1 {get; }
+    public template.TbBase_2 TbBase_2 {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -23,10 +24,13 @@ public partial class Tables
         tables.Add("item.TbItem", TbItem);
         TbBase_1 = new template.TbBase_1(loader("template_tbbase_1")); 
         tables.Add("template.TbBase_1", TbBase_1);
+        TbBase_2 = new template.TbBase_2(loader("template_tbbase_2")); 
+        tables.Add("template.TbBase_2", TbBase_2);
 
         PostInit();
         TbItem.Resolve(tables); 
         TbBase_1.Resolve(tables); 
+        TbBase_2.Resolve(tables); 
         PostResolve();
     }
 
@@ -34,6 +38,7 @@ public partial class Tables
     {
         TbItem.TranslateText(translator); 
         TbBase_1.TranslateText(translator); 
+        TbBase_2.TranslateText(translator); 
     }
     
     partial void PostInit();

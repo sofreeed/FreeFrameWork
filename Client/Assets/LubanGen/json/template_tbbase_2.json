@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "myText": {
+      "key": "/demo/key1",
+      "text": "apple"
+    }
+  },
+  {
+    "id": 2,
+    "myText": {
+      "key": "/demo/key2",
+      "text": "banana"
+    }
+  },
+  {
+    "id": 3,
+    "myText": {
+      "key": "/demo/key3",
+      "text": "XiGua"
+    }
+  }
+]
