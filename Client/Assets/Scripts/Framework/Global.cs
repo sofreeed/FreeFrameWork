@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class Global : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public static TypeEventSystem EventSystem;
+    public static cfg.Tables Tables;
+
     void Start()
+    {
+        EventSystem = TypeEventSystem.Global;
+        Tables = DataTableManager.Init();
+        
+        Game.Instance.Init();
+        DataCenter.Instance.Init();
+    }
+
+    
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitTables()
     {
         
     }
