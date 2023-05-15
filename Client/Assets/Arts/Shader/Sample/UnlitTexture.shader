@@ -8,7 +8,6 @@ Shader "URPSample/UnlitTexture"
 
     SubShader
     {
-
         Tags
         {
             "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline"
