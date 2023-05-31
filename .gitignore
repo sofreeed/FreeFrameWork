@@ -2,6 +2,7 @@ Client/Library/
 Client/Logs/
 Client/Temp/
 Client/obj/
+Client/UserSettings/
 
 *.csproj
 .idea
