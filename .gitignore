@@ -4,7 +4,7 @@ Client/Temp/
 Client/obj/
 Client/UserSettings/
 Client/Client.sln
-
+*.sln
 *.csproj
 .idea
 
