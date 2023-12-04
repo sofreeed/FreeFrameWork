@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<root Version="2.4">
-  <Common AutoAddressable="False" UniqueBundleName="False" ShowPackageView="True" ShowEditorAlias="False" />
-  <Package PackageName="DefaultPackage" PackageDesc="">
-    <Group GroupActiveRule="EnableGroup" GroupName="UI" GroupDesc="" AssetTags="" />
-    <Group GroupActiveRule="EnableGroup" GroupName="Model" GroupDesc="" AssetTags="" />
-  </Package>
-</root>
