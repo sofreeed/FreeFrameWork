@@ -29,16 +29,8 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetsPackage/Prefabs/HotUpdateMain.prefab
-        CollectorGUID: 6840f108fd8c7904bb2ad0142abc8513
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-      - CollectPath: Assets/AssetsPackage/Prefabs/UIRoot.prefab
-        CollectorGUID: 9420786211c1f984e898ac631e5cf4f9
+      - CollectPath: Assets/AssetsPackage/Prefabs
+        CollectorGUID: e1837e1a82fc33d4a8f10bdbcddbf160
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackSeparately

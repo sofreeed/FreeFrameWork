@@ -7,8 +7,8 @@
     "is_main": false,
     "is_full": false,
     "hiden_other": false,
-    "background": "",
-    "click_cross": false,
+    "bg_alpha": 0,
+    "click_cross": true,
     "click_close": false
   },
   {
@@ -19,9 +19,9 @@
     "is_main": false,
     "is_full": false,
     "hiden_other": true,
-    "background": "",
+    "bg_alpha": 0.5,
     "click_cross": false,
-    "click_close": false
+    "click_close": true
   },
   {
     "id": 3,
@@ -31,7 +31,7 @@
     "is_main": true,
     "is_full": true,
     "hiden_other": false,
-    "background": "",
+    "bg_alpha": 0,
     "click_cross": false,
     "click_close": false
   },
@@ -43,7 +43,7 @@
     "is_main": false,
     "is_full": false,
     "hiden_other": false,
-    "background": "",
+    "bg_alpha": 0,
     "click_cross": false,
     "click_close": false
   },
@@ -55,7 +55,7 @@
     "is_main": false,
     "is_full": true,
     "hiden_other": false,
-    "background": "",
+    "bg_alpha": 0,
     "click_cross": false,
     "click_close": false
   },
@@ -67,7 +67,7 @@
     "is_main": false,
     "is_full": false,
     "hiden_other": false,
-    "background": "",
+    "bg_alpha": 0,
     "click_cross": false,
     "click_close": false
   },
@@ -79,7 +79,7 @@
     "is_main": false,
     "is_full": false,
     "hiden_other": false,
-    "background": "",
+    "bg_alpha": 0,
     "click_cross": false,
     "click_close": false
   },
@@ -91,7 +91,7 @@
     "is_main": false,
     "is_full": false,
     "hiden_other": false,
-    "background": "",
+    "bg_alpha": 0,
     "click_cross": false,
     "click_close": false
   }

@@ -7,6 +7,12 @@ using UnityEngine;
 using YooAsset;
 using Object = UnityEngine.Object;
 
+/*
+ * TODO:1.把隐藏下面范围从Normal层扩展到其他层
+ * TODO:2.把View拆分开，让MonoBehaviour只存组件引用，防止View生命周期的方法不好调用
+ *
+ */
+
 public class UIMgr : Singleton<UIMgr>
 {
     private const string UIRootPrefab = "UIRoot";
@@ -23,6 +29,8 @@ public class UIMgr : Singleton<UIMgr>
     private ResourcePackage _defaultPackage;
     private AssetHandle _rootAssetHandle;
 
+    private UIMaskMgr _uiMaskMgr;
+
     private UIMgr()
     {
     }
@@ -36,6 +44,9 @@ public class UIMgr : Singleton<UIMgr>
         UIRoot.name = UIRootPrefab;
         UICamera = UIRoot.transform.Find("UICamera")?.GetComponent<Camera>();
         Object.DontDestroyOnLoad(UIRoot);
+
+        _uiMaskMgr = new UIMaskMgr();
+        _uiMaskMgr.Init(UIRoot.transform);
 
         InitLayers();
     }
@@ -62,6 +73,9 @@ public class UIMgr : Singleton<UIMgr>
         _rootAssetHandle = null;
 
         _defaultPackage = null;
+
+        _uiMaskMgr.Dispose();
+        _uiMaskMgr = null;
     }
 
     public void OpenWindow(UINameEnum uiName)
@@ -221,6 +235,9 @@ public class UIMgr : Singleton<UIMgr>
             //先显示再调用代码，否则调不到
             window.UIView.gameObject.SetActive(true);
             window.UIView.Show();
+
+            _uiMaskMgr.Show(window.UIView, window.UIConfig.BgAlpha, window.UIConfig.ClickCross,
+                window.UIConfig.ClickClose);
         }
     }
 

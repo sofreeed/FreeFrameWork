@@ -24,7 +24,7 @@ public sealed partial class UIConfig : Luban.BeanBase
         { if(!_buf["is_main"].IsBoolean) { throw new SerializationException(); }  IsMain = _buf["is_main"]; }
         { if(!_buf["is_full"].IsBoolean) { throw new SerializationException(); }  IsFull = _buf["is_full"]; }
         { if(!_buf["hiden_other"].IsBoolean) { throw new SerializationException(); }  HidenOther = _buf["hiden_other"]; }
-        { if(!_buf["background"].IsString) { throw new SerializationException(); }  Background = _buf["background"]; }
+        { if(!_buf["bg_alpha"].IsNumber) { throw new SerializationException(); }  BgAlpha = _buf["bg_alpha"]; }
         { if(!_buf["click_cross"].IsBoolean) { throw new SerializationException(); }  ClickCross = _buf["click_cross"]; }
         { if(!_buf["click_close"].IsBoolean) { throw new SerializationException(); }  ClickClose = _buf["click_close"]; }
     }
@@ -65,7 +65,7 @@ public sealed partial class UIConfig : Luban.BeanBase
     /// <summary>
     /// 背景颜色，预置几个透明度
     /// </summary>
-    public readonly string Background;
+    public readonly float BgAlpha;
     /// <summary>
     /// 点击穿透
     /// </summary>
@@ -102,7 +102,7 @@ public sealed partial class UIConfig : Luban.BeanBase
         + "isMain:" + IsMain + ","
         + "isFull:" + IsFull + ","
         + "hidenOther:" + HidenOther + ","
-        + "background:" + Background + ","
+        + "bgAlpha:" + BgAlpha + ","
         + "clickCross:" + ClickCross + ","
         + "clickClose:" + ClickClose + ","
         + "}";

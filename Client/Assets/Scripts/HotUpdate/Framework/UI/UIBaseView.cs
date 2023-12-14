@@ -51,6 +51,11 @@ public abstract class UIBaseView : MonoBehaviour
     protected virtual void OnRemoveListener()
     {
     }
+    
+    public virtual void OnClickMaskArea()
+    {
+        CloseSelf();
+    }
 
     #endregion
 
