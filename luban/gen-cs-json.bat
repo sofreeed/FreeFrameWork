@@ -8,8 +8,8 @@ dotnet %LUBAN_DLL% ^
     -c cs-simple-json ^
     -d json  ^
     --conf %CONF_ROOT%\luban.conf ^
-    -x outputCodeDir=..\Client\Assets\Scripts\LubanGen\Codes ^
-    -x outputDataDir=..\Client\Assets\Scripts\LubanGen\Datas ^
+    -x outputCodeDir=..\Client\Assets\Scripts\HotUpdate\LubanGen ^
+    -x outputDataDir=..\Client\Assets\AssetsPackage\LubanDatas\ ^
     -x pathValidator.rootDir=%WORKSPACE%\Projects\Csharp_Unity_bin ^
     -x l10n.textProviderFile=*@%CONF_ROOT%\l10n.json
 

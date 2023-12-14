@@ -9,9 +9,7 @@ using YooAsset;
 
 public class Launcher : MonoBehaviour
 {
-    private const string HotUpdatePackageName = "HotUpdatePackage";
-    private const string HotUpdateDllName = "HotUpdate";
-    private const string HotUpdatePrefabName = "HotUpdateMain";
+    
 
     void Start()
     {
@@ -20,7 +18,7 @@ public class Launcher : MonoBehaviour
 
     public void OnAssetUpdateComplete(ResourcePackage package)
     {
-        ResourcePackageUpdater hotUpdateDll = new ResourcePackageUpdater(HotUpdatePackageName);
+        ResourcePackageUpdater hotUpdateDll = new ResourcePackageUpdater(GameConst.HotUpdatePackageName);
         hotUpdateDll.BeginDownLoad(OnHotUpdateDllComplete);
     }
 
@@ -32,13 +30,15 @@ public class Launcher : MonoBehaviour
 #else
         LoadMetadataForAOTAssemblies(package);
 
-        var handle = package.LoadRawFileSync(HotUpdateDllName);
+        var handle = package.LoadRawFileSync(GameConst.HotUpdateDllName);
         Assembly hotUpdateAss = Assembly.Load(handle.GetRawFileData());
         Debug.Log($"热更新dll加载成功，大小{handle.GetRawFileData().Length}");
 #endif
 
-        var handle1 = YooAssets.LoadAssetSync<GameObject>(HotUpdatePrefabName);
-        GameObject go = handle1.InstantiateSync();
+        var handle1 = YooAssets.LoadAssetSync<GameObject>(GameConst.HotUpdatePrefabName);
+        GameObject hotUpdateGo = handle1.InstantiateSync();
+        hotUpdateGo.name = GameConst.HotUpdatePrefabName;
+        DontDestroyOnLoad(hotUpdateGo);
         //进入HotUpdateMain.Start()
     }
 

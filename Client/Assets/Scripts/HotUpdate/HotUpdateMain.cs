@@ -7,7 +7,13 @@ public class HotUpdateMain : MonoBehaviour
 {
     void Start()
     {
-        Debug.LogError("Game Start 111...");
+        Logger.Info("HotUpdateMain Game Start ...");
+
+        var dataTableMgr = DataTableMgr.Instance;
+        var dataMgr = DataMgr.Instance;
+        var netMgr = NetMgr.Instance;
+        var uiMgr = UIMgr.Instance;
+
+        gameObject.AddComponent<UITest>();
     }
-    
 }
