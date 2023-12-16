@@ -51,17 +51,18 @@ public abstract class UIBaseView : MonoBehaviour
     protected virtual void OnRemoveListener()
     {
     }
-    
-    public virtual void OnClickMaskArea()
-    {
-        CloseSelf();
-    }
 
     #endregion
+
 
     protected void CloseSelf()
     {
         UIMgr.Instance.CloseWindow(UIName);
+    }
+
+    public virtual void OnClickMaskArea()
+    {
+        CloseSelf();
     }
 
     protected IUnRegister AddListener<T>(Action<T> action)
@@ -78,6 +79,4 @@ public abstract class UIBaseView : MonoBehaviour
     {
         DataMgr.Instance.Broadcast(e);
     }
-    
-    
 }

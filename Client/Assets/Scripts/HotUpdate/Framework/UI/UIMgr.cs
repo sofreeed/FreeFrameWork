@@ -8,9 +8,11 @@ using YooAsset;
 using Object = UnityEngine.Object;
 
 /*
- * TODO:1.把隐藏下面范围从Normal层扩展到其他层
- * TODO:2.把View拆分开，让MonoBehaviour只存组件引用，防止View生命周期的方法不好调用
- *
+ * 还没有做的事：
+ * 1.把[隐藏下面范围]从Normal层扩展到其他层
+ * 2.把View拆分开，让MonoBehaviour只存组件引用，防止View生命周期的方法不好调用
+ * 3.子界面
+ * 4.国际化
  */
 
 public class UIMgr : Singleton<UIMgr>
@@ -21,10 +23,11 @@ public class UIMgr : Singleton<UIMgr>
     public Camera UICamera { set; get; }
 
     private Dictionary<UINameEnum, UIWindow> _openedWindows = new Dictionary<UINameEnum, UIWindow>();
-
     private List<UIWindow> _reversedWindows = new List<UIWindow>();
-
     private Dictionary<UILayerEnum, UILayerContainer> _uiLayers = new Dictionary<UILayerEnum, UILayerContainer>();
+
+    private static Vector3 _HiddenPosition = new Vector3(0, 10000, 0);
+    private static Vector3 _ShowPosition = Vector3.zero;
 
     private ResourcePackage _defaultPackage;
     private AssetHandle _rootAssetHandle;
@@ -107,6 +110,12 @@ public class UIMgr : Singleton<UIMgr>
         AssetHandle handle = _defaultPackage.LoadAssetAsync<GameObject>(window.UIConfig.Path);
         window.UIAssetHandle = handle;
         await handle.Task;
+
+        if (_openedWindows.ContainsKey(uiName))
+        {
+            //说明在界面加载的期间，再次点击打开界面，直接返回
+            return;
+        }
 
         var gameObj = handle.InstantiateSync(window.UILayerContainer.Transform);
         window.UIView = gameObj.GetComponent<UIBaseView>();
@@ -233,8 +242,10 @@ public class UIMgr : Singleton<UIMgr>
         if (window.UIView.IsShow == false)
         {
             //先显示再调用代码，否则调不到
-            window.UIView.gameObject.SetActive(true);
+            //window.UIView.gameObject.SetActive(true);
             window.UIView.Show();
+
+            window.UIView.transform.localPosition = _ShowPosition;
 
             _uiMaskMgr.Show(window.UIView, window.UIConfig.BgAlpha, window.UIConfig.ClickCross,
                 window.UIConfig.ClickClose);
@@ -247,7 +258,8 @@ public class UIMgr : Singleton<UIMgr>
         {
             //先调用代码再隐藏，否则调不到
             window.UIView.Hide();
-            window.UIView.gameObject.SetActive(false);
+            //window.UIView.gameObject.SetActive(false);
+            window.UIView.transform.localPosition = _HiddenPosition;
         }
     }
 
