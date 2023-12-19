@@ -4,20 +4,22 @@ using System;
 using System.Net.Sockets;
 using System.Threading;
 using System.Collections.Generic;
+using System.Net;
+using UnityEngine;
 
 namespace Networks
 {
-    public class HjTcpNetwork : HjNetworkBase
+    public class TcpNetwork : NetworkBase
     {
         private Thread mSendThread = null;
         private volatile bool mSendWork = false;
-        private HjSemaphore mSendSemaphore = null;
+        private Semaphore mSendSemaphore = null;
 
         protected IMessageQueue mSendMsgQueue = null;
 
-        public HjTcpNetwork(int maxBytesOnceSent = 1024 * 100, int maxReceiveBuffer = 1024 * 512) : base(maxBytesOnceSent, maxReceiveBuffer)
+        public TcpNetwork(int maxBytesOnceSent = 1024 * 100, int maxReceiveBuffer = 1024 * 512) : base(maxBytesOnceSent, maxReceiveBuffer)
         {
-            mSendSemaphore = new HjSemaphore();
+            mSendSemaphore = new Semaphore();
             mSendMsgQueue = new MessageQueue();
         }
 
@@ -36,8 +38,19 @@ namespace Networks
             mClientSocket = new Socket(newAddressFamily, SocketType.Stream, ProtocolType.Tcp);
             mClientSocket.BeginConnect(mIp, mPort, (IAsyncResult ia) =>
             {
-                mClientSocket.EndConnect(ia);
-                OnConnected();
+                if (ia.IsCompleted != true)
+                {
+                    mClientSocket.EndConnect(ia);
+                }
+                if (mClientSocket.Connected)
+                {
+                    OnConnected();
+                }
+                else
+                {
+                    mStatus = SOCKSTAT.CLOSED;
+                    ReportSocketClosed(ESocketError.ERROR_3, "BeginConnect Error!");
+                }
             }, null);
             mStatus = SOCKSTAT.CONNECTING;
         }
@@ -145,33 +158,23 @@ namespace Networks
                 // 组包、拆包
                 byte[] data = streamBuffer.GetBuffer();
                 int start = 0;
+                int firsLen = 4;
                 streamBuffer.ResetStream();
                 while (true)
                 {
-                    if (bufferCurLen - start < sizeof(int))
+                    if (bufferCurLen - start < firsLen)
                     {
                         break;
                     }
-
-                    int msgLen = BitConverter.ToInt32(data, start);
-                    if (bufferCurLen < msgLen + sizeof(int))
+                    int msgLen = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(data, start));
+                    if (bufferCurLen - start < msgLen + firsLen)
                     {
                         break;
                     }
-
-                    // 提取字节流，去掉开头表示长度的4字节
-                    start += sizeof(int);
-                    var bytes = streamBuffer.ToArray(start, msgLen);
-#if LOG_RECEIVE_BYTES
-                    var sb = new System.Text.StringBuilder();
-                    for (int i = 0; i < bytes.Length; i++)
-                    {
-                        sb.AppendFormat("{0}\t", bytes[i]);
-                    }
-                    Logger.Log("HjTcpNetwork receive bytes : " + sb.ToString());
-#endif
+                    var bytes = streamBuffer.ToArray(start, msgLen+firsLen);
                     mReceiveMsgQueue.Add(bytes);
-
+                    // 提取字节流，去掉开头表示长度的4字节
+                    start += firsLen;
                     // 下一次组包
                     start += msgLen;
                 }
@@ -184,25 +187,13 @@ namespace Networks
             }
             catch (Exception ex)
             {
-                Logger.Error(string.Format("Tcp receive package err : {0}\n {1}", ex.Message, ex.StackTrace));
+                Debug.LogError(string.Format("Tcp receive package err : {0}\n {1}", ex.Message, ex.StackTrace));
             }
         }
 
         public override void SendMessage(byte[] msgObj)
         {
-#if LOG_SEND_BYTES
-            var sb = new System.Text.StringBuilder();
-            for (int i = 0; i < msgObj.Length; i++)
-            {
-                sb.AppendFormat("{0}\t", msgObj[i]);
-            }
-            Logger.Log("HjTcpNetwork send bytes : " + sb.ToString());
-#endif
-            ByteBuffer buffer = new ByteBuffer();
-            buffer.WriteInt(msgObj.Length);
-            buffer.WriteBytes(msgObj);
-
-            mSendMsgQueue.Add(buffer.ToBytes());
+            mSendMsgQueue.Add(msgObj);
             mSendSemaphore.ProduceResrouce();
         }
     }

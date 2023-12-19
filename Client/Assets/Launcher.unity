@@ -253,6 +253,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Launcher
       objectReference: {fileID: 0}
+    - target: {fileID: 9130763428791643244, guid: 920516352259e17438362f9ccd3140d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9130763428791643245, guid: 920516352259e17438362f9ccd3140d0,
         type: 3}
       propertyPath: m_RootOrder
@@ -307,6 +312,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130763428791643246, guid: 920516352259e17438362f9ccd3140d0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130763428791643247, guid: 920516352259e17438362f9ccd3140d0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 920516352259e17438362f9ccd3140d0, type: 3}

@@ -51,9 +51,9 @@ public class ByteBuffer
         writer.Write((int)v);
     }
 
-    public void WriteShort(ushort v)
+    public void WriteShort(short v)
     {
-        writer.Write((ushort)v);
+        writer.Write((short)v);
     }
 
     public void WriteLong(long v)

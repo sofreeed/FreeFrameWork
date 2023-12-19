@@ -2,14 +2,14 @@
 
 namespace Networks
 {
-    public struct HjNetworkEvt
+    public struct NetworkEvt
     {
         public object sender;
         public int result;
         public string msg;
         public Action<object, int, string> evtHandle;
 
-        public HjNetworkEvt(object sender, int result, string msg, Action<object, int, string> evtHandle)
+        public NetworkEvt(object sender, int result, string msg, Action<object, int, string> evtHandle)
         {
             this.sender = sender;
             this.result = result;

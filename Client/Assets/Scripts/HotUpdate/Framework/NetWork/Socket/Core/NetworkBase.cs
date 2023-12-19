@@ -12,13 +12,13 @@ namespace Networks
         CONNECTED,
     }
 
-    public abstract class HjNetworkBase
+    public abstract class NetworkBase
     {
         public Action<object, int, string> OnConnect = null;
         public Action<object, int, string> OnClosed = null;
         public Action<byte[]> ReceivePkgHandle = null;
 
-        private List<HjNetworkEvt> mNetworkEvtList = null;
+        private List<NetworkEvt> mNetworkEvtList = null;
         private object mNetworkEvtLock = null;
 
         protected int mMaxBytesOnceSent = 0;
@@ -36,14 +36,14 @@ namespace Networks
         protected IMessageQueue mReceiveMsgQueue = null;
         
 
-        public HjNetworkBase(int maxBytesOnceSent = 1024 * 512, int maxReceiveBuffer = 1024 * 1024 * 2)
+        public NetworkBase(int maxBytesOnceSent = 1024 * 512, int maxReceiveBuffer = 1024 * 1024 * 2)
         {
             mStatus = SOCKSTAT.CLOSED;
             
             mMaxBytesOnceSent = maxBytesOnceSent;
             mMaxReceiveBuffer = maxReceiveBuffer;
 
-            mNetworkEvtList = new List<HjNetworkEvt>();
+            mNetworkEvtList = new List<NetworkEvt>();
             mNetworkEvtLock = new object();
             mTempMsgList = new List<byte[]>();
             mReceiveMsgQueue = new MessageQueue();
@@ -160,7 +160,7 @@ namespace Networks
         {
             if (OnConnect != null)
             {
-                AddNetworkEvt(new HjNetworkEvt(this, result, msg, OnConnect));
+                AddNetworkEvt(new NetworkEvt(this, result, msg, OnConnect));
             }
         }
 
@@ -168,7 +168,7 @@ namespace Networks
         {
             if (OnClosed != null)
             {
-                AddNetworkEvt(new HjNetworkEvt(this, result, msg, OnClosed));
+                AddNetworkEvt(new NetworkEvt(this, result, msg, OnClosed));
             }
         }
 
@@ -214,7 +214,7 @@ namespace Networks
             }
         }
         
-        protected void AddNetworkEvt(HjNetworkEvt evt)
+        protected void AddNetworkEvt(NetworkEvt evt)
         {
             lock (mNetworkEvtLock)
             {
@@ -230,7 +230,7 @@ namespace Networks
                 {
                     for (int i = 0; i < mNetworkEvtList.Count; ++i)
                     {
-                        HjNetworkEvt evt = mNetworkEvtList[i];
+                        NetworkEvt evt = mNetworkEvtList[i];
                         evt.evtHandle(evt.sender, evt.result, evt.msg);
                     }
                 }

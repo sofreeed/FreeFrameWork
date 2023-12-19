@@ -2,12 +2,12 @@
 
 namespace Networks
 {
-    class HjSemaphore
+    class Semaphore
     {
         int mResource;
         object mResourceObj = null;
 
-        public HjSemaphore()
+        public Semaphore()
         {
             mResource = 0;
             mResourceObj = new object();
