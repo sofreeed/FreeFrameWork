@@ -229,7 +229,7 @@ public class UIMgr : Singleton<UIMgr>
             }
             else
             {
-                if (config.HidenOther)
+                if (config.HiddenOther)
                 {
                     hiddenFlag = true;
                 }

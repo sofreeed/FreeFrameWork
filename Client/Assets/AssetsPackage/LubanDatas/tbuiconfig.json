@@ -6,10 +6,11 @@
     "layer": 0,
     "is_main": false,
     "is_full": false,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0,
     "click_cross": true,
-    "click_close": false
+    "click_close": false,
+    "desc": "/apple"
   },
   {
     "id": 2,
@@ -18,10 +19,11 @@
     "layer": 2,
     "is_main": false,
     "is_full": false,
-    "hiden_other": true,
+    "hidden_other": true,
     "bg_alpha": 0.5,
     "click_cross": false,
-    "click_close": true
+    "click_close": true,
+    "desc": "/abc"
   },
   {
     "id": 3,
@@ -30,10 +32,11 @@
     "layer": 2,
     "is_main": true,
     "is_full": true,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0.1,
     "click_cross": false,
-    "click_close": false
+    "click_close": false,
+    "desc": "/def"
   },
   {
     "id": 4,
@@ -42,10 +45,11 @@
     "layer": 2,
     "is_main": false,
     "is_full": false,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0.1,
     "click_cross": false,
-    "click_close": false
+    "click_close": false,
+    "desc": "key_name"
   },
   {
     "id": 5,
@@ -54,10 +58,11 @@
     "layer": 2,
     "is_main": false,
     "is_full": true,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0.1,
     "click_cross": false,
-    "click_close": false
+    "click_close": false,
+    "desc": "test/a"
   },
   {
     "id": 6,
@@ -66,10 +71,11 @@
     "layer": 3,
     "is_main": false,
     "is_full": false,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0.1,
     "click_cross": false,
-    "click_close": true
+    "click_close": true,
+    "desc": "name"
   },
   {
     "id": 1000,
@@ -78,10 +84,11 @@
     "layer": 5,
     "is_main": false,
     "is_full": false,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0.1,
     "click_cross": false,
-    "click_close": false
+    "click_close": false,
+    "desc": "/banana"
   },
   {
     "id": 1001,
@@ -90,9 +97,10 @@
     "layer": 7,
     "is_main": false,
     "is_full": false,
-    "hiden_other": false,
+    "hidden_other": false,
     "bg_alpha": 0.1,
     "click_cross": false,
-    "click_close": false
+    "click_close": false,
+    "desc": "/banana"
   }
 ]

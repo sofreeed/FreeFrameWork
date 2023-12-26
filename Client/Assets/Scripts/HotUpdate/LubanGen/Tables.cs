@@ -14,13 +14,21 @@ namespace cfg
 {
 public partial class Tables
 {
-    public item.TbItem TbItem {get; }
+    public TbItem TbItem {get; }
     public TbUIConfig TbUIConfig {get; }
+    public TbL10n TbL10n {get; }
+    public LocalizeConfig_CNCategory LocalizeConfigCNCategory {get; }
+    public LocalizeConfig_ENCategory LocalizeConfigENCategory {get; }
+    public LocalizeConfig_TWCategory LocalizeConfigTWCategory {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
-        TbItem = new item.TbItem(loader("item_tbitem"));
+        TbItem = new TbItem(loader("tbitem"));
         TbUIConfig = new TbUIConfig(loader("tbuiconfig"));
+        TbL10n = new TbL10n(loader("tbl10n"));
+        LocalizeConfigCNCategory = new LocalizeConfig_CNCategory(loader("LocalizeConfig_CNCategory"));
+        LocalizeConfigENCategory = new LocalizeConfig_ENCategory(loader("LocalizeConfig_ENCategory"));
+        LocalizeConfigTWCategory = new LocalizeConfig_TWCategory(loader("LocalizeConfig_TWCategory"));
         ResolveRef();
     }
     
@@ -28,6 +36,10 @@ public partial class Tables
     {
         TbItem.ResolveRef(this);
         TbUIConfig.ResolveRef(this);
+        TbL10n.ResolveRef(this);
+        LocalizeConfigCNCategory.ResolveRef(this);
+        LocalizeConfigENCategory.ResolveRef(this);
+        LocalizeConfigTWCategory.ResolveRef(this);
     }
 }
 

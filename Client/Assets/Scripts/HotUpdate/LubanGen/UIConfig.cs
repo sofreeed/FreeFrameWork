@@ -23,10 +23,11 @@ public sealed partial class UIConfig : Luban.BeanBase
         { if(!_buf["layer"].IsNumber) { throw new SerializationException(); }  Layer = _buf["layer"]; }
         { if(!_buf["is_main"].IsBoolean) { throw new SerializationException(); }  IsMain = _buf["is_main"]; }
         { if(!_buf["is_full"].IsBoolean) { throw new SerializationException(); }  IsFull = _buf["is_full"]; }
-        { if(!_buf["hiden_other"].IsBoolean) { throw new SerializationException(); }  HidenOther = _buf["hiden_other"]; }
+        { if(!_buf["hidden_other"].IsBoolean) { throw new SerializationException(); }  HiddenOther = _buf["hidden_other"]; }
         { if(!_buf["bg_alpha"].IsNumber) { throw new SerializationException(); }  BgAlpha = _buf["bg_alpha"]; }
         { if(!_buf["click_cross"].IsBoolean) { throw new SerializationException(); }  ClickCross = _buf["click_cross"]; }
         { if(!_buf["click_close"].IsBoolean) { throw new SerializationException(); }  ClickClose = _buf["click_close"]; }
+        { if(!_buf["desc"].IsString) { throw new SerializationException(); }  Desc = _buf["desc"]; }
     }
 
     public static UIConfig DeserializeUIConfig(JSONNode _buf)
@@ -61,7 +62,7 @@ public sealed partial class UIConfig : Luban.BeanBase
     /// <summary>
     /// 隐藏其他
     /// </summary>
-    public readonly bool HidenOther;
+    public readonly bool HiddenOther;
     /// <summary>
     /// 背景颜色，预置几个透明度
     /// </summary>
@@ -74,12 +75,17 @@ public sealed partial class UIConfig : Luban.BeanBase
     /// 点击任意地方关闭
     /// </summary>
     public readonly bool ClickClose;
+    /// <summary>
+    /// key
+    /// </summary>
+    public readonly string Desc;
    
     public const int __ID__ = 202324726;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)
     {
+        
         
         
         
@@ -101,10 +107,11 @@ public sealed partial class UIConfig : Luban.BeanBase
         + "layer:" + Layer + ","
         + "isMain:" + IsMain + ","
         + "isFull:" + IsFull + ","
-        + "hidenOther:" + HidenOther + ","
+        + "hiddenOther:" + HiddenOther + ","
         + "bgAlpha:" + BgAlpha + ","
         + "clickCross:" + ClickCross + ","
         + "clickClose:" + ClickClose + ","
+        + "desc:" + Desc + ","
         + "}";
     }
 }
