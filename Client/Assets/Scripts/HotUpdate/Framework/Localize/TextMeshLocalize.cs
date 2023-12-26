@@ -11,7 +11,7 @@ public class LocalizeTextEditor_CN
 public class TextMeshLocalize : MonoBehaviour
 {
     public string Key;
-    private TMP_Text Text;
+    public TMP_Text Text;
 
     void Awake()
     {

@@ -7,13 +7,13 @@ public class UITest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        var localizeMgr = LocalizeMgr.Instance;
         var dataTableMgr = DataTableMgr.Instance;
-        var dataMgr = DataMgr.Instance;
-        var netMgr = NetMgr.Instance;
+        //var dataMgr = DataMgr.Instance;
+        //var netMgr = NetMgr.Instance;
         var uiMgr = UIMgr.Instance;
         
-        
-        uiMgr.OpenWindow(UINameEnum.Main);
+        //uiMgr.OpenWindow(UINameEnum.Main);
     }
 
     // Update is called once per frame

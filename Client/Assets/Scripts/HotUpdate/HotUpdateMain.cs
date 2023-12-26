@@ -15,7 +15,7 @@ public class HotUpdateMain : MonoBehaviour
         var netMgr = NetMgr.Instance;
         var uiMgr = UIMgr.Instance;
         
-        gameObject.AddComponent<UITest>();
+        //gameObject.AddComponent<UITest>();
         
         //var _rootAssetHandle = YooAssets.LoadAssetSync<GameObject>("UIRoot");
         //GameObject UIRoot = _rootAssetHandle.InstantiateSync();
