@@ -26,6 +26,10 @@ public class DataTableMgr : Singleton<DataTableMgr>
 
         var tables = new cfg.Tables(LoadJson);
         Tables = tables;
+        
+        //设置多语言表
+        LocalizeMgr.Instance.ReLoad();
+        //string localizeStr = tables.TbUIConfig[1000].Desc.Localize();
     }
 
     private ByteBuf LoadByte(string file)

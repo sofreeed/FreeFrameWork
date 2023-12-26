@@ -12,6 +12,14 @@ public enum EGameLanguage
     zh_TW
 }
 
+public static class LocalizeExtend
+{
+    public static string Localize(this string key)
+    {
+        return LocalizeMgr.Instance.GetText(key);
+    }
+}
+
 public class LocalizeMgr : Singleton<LocalizeMgr>
 {
     public EGameLanguage GameLanguage { get; set; }
@@ -21,10 +29,9 @@ public class LocalizeMgr : Singleton<LocalizeMgr>
     public LocalizeConfig_TWCategory LocalizeConfigTWCategory { get; set; }
 
     public static Action OnLanguageChange;
-    
+
     private LocalizeMgr()
     {
-        
     }
 
     public override void Init()
@@ -56,7 +63,22 @@ public class LocalizeMgr : Singleton<LocalizeMgr>
         }
     }
 
-    private string GetText(string key)
+    //动态切换语言时调用
+    public void SwichLanguage(EGameLanguage language)
+    {
+        ReLoad();
+        OnLanguageChange?.Invoke();
+    }
+
+    public void ReLoad()
+    {
+        //根据GameLanguage设置翻译表，当然Luban也不要加载全部翻译
+        LocalizeConfigCNCategory = DataTableMgr.Tables.LocalizeConfigCNCategory;
+        LocalizeConfigENCategory = DataTableMgr.Tables.LocalizeConfigENCategory;
+        LocalizeConfigTWCategory = DataTableMgr.Tables.LocalizeConfigTWCategory;
+    }
+    
+    public string GetText(string key)
     {
         if (GameLanguage == EGameLanguage.zh)
         {
@@ -76,18 +98,5 @@ public class LocalizeMgr : Singleton<LocalizeMgr>
         }
     }
 
-    //动态切换语言时调用
-    public void SwichLanguage(EGameLanguage language)
-    {
-        ReLoad();
-        OnLanguageChange?.Invoke();
-    }
-
-    public void ReLoad()
-    {
-        //根据GameLanguage设置翻译表，当然Luban也不要加载全部翻译
-        LocalizeConfigCNCategory = DataTableMgr.Tables.LocalizeConfigCNCategory;
-        LocalizeConfigENCategory = DataTableMgr.Tables.LocalizeConfigENCategory;
-        LocalizeConfigTWCategory = DataTableMgr.Tables.LocalizeConfigTWCategory;
-    }
+    
 }

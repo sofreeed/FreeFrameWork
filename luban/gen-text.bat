@@ -8,7 +8,7 @@ dotnet %LUBAN_DLL% ^
     -d text-list   ^
     --conf %CONF_ROOT%\luban.conf ^
 	--validationFailAsError ^
-    -x outputDataDir=..\Client\Assets\AssetsPackage\LubanDatas\ ^
+    -x outputDataDir=..\Client\Assets\AssetsPackage\LubanDatas\Localize ^
 	-x l10n.textProviderFile=*@%CONF_ROOT%\l10n.json ^
 	-x l10n.textListFile=texts.txt
 pause

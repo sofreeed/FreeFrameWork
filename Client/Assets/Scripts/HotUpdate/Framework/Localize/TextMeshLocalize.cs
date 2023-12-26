@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TextMeshLocalize : MonoBehaviour
+public class LocalizeTextEditor_CN
 {
-    
-    private TMP_Text Text;
-    void Awake()
-    {
-        Text = GetComponent<TMP_Text>();
-        //Text.text = "";
-    }
-
     
 }
 
+public class TextMeshLocalize : MonoBehaviour
+{
+    public string Key;
+    private TMP_Text Text;
+
+    void Awake()
+    {
+        Text = GetComponent<TMP_Text>();
+        
+        if (!string.IsNullOrEmpty(Key))
+            Text.text = Key.Localize();
+    }
+}
