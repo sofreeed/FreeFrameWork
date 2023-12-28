@@ -7,9 +7,9 @@ using cfg;
 
 public enum EGameLanguage
 {
-    zh = 0,
-    en,
-    zh_TW
+    zh_CN = 0,
+    zh_TW = 1,
+    en = 2,
 }
 
 public static class LocalizeExtend
@@ -49,16 +49,24 @@ public class LocalizeMgr : Singleton<LocalizeMgr>
 
     private void SetLanguage()
     {
-        GameLanguage = EGameLanguage.zh;
-
+        //1.如果本地有缓存直接返回
+        //2.策划默认设置
+        //3.根据系统语言判断
         SystemLanguage systemLanguage = Application.systemLanguage;
         switch (systemLanguage)
         {
             case SystemLanguage.Chinese:
-                GameLanguage = EGameLanguage.zh;
+            case SystemLanguage.ChineseSimplified:
+                GameLanguage = EGameLanguage.zh_CN;
+                break;
+            case SystemLanguage.ChineseTraditional:
+                GameLanguage = EGameLanguage.zh_TW;
                 break;
             case SystemLanguage.English:
                 GameLanguage = EGameLanguage.en;
+                break;
+            default:
+                GameLanguage = EGameLanguage.zh_CN;
                 break;
         }
     }
@@ -80,15 +88,15 @@ public class LocalizeMgr : Singleton<LocalizeMgr>
     
     public string GetText(string key)
     {
-        if (GameLanguage == EGameLanguage.zh)
+        if (GameLanguage == EGameLanguage.zh_CN)
         {
             return LocalizeConfigCNCategory[key].TextCn;
         }
-        else if (GameLanguage == EGameLanguage.en)
+        else if (GameLanguage == EGameLanguage.zh_TW)
         {
             return LocalizeConfigENCategory[key].TextEn;
         }
-        else if (GameLanguage == EGameLanguage.zh_TW)
+        else if (GameLanguage == EGameLanguage.en)
         {
             return LocalizeConfigTWCategory[key].TextTw;
         }
