@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MainScene : MonoBehaviour
 {
-    private World _world;
-    private Town _town;
+    private WorldMgr _worldMgr;
+    private TownMgr _townMgr;
     
     void Start()
     {

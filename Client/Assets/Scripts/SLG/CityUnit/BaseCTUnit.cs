@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseTownUnit : MonoBehaviour
+public class BaseCTUnit : MonoBehaviour
 {
+    public ECTUnit UnitType { get; set; }
+    public bool IsDisplay { get; set; }
+    public bool CollideLevel { set; get; }
+
     public int TileX;
     public int TileY;
 
@@ -13,13 +17,10 @@ public class BaseTownUnit : MonoBehaviour
     public int PosX;
     public int PosY;
 
-    private int _colliderLevel = -1;
-    private bool _display = true;
-    
     void Start()
     {
     }
-    
+
     public virtual void Init(int x, int y, int wdith, int height)
     {
         TileX = x;
@@ -36,7 +37,6 @@ public class BaseTownUnit : MonoBehaviour
 
     public void GetRectSize()
     {
-        
     }
 
     void Update()

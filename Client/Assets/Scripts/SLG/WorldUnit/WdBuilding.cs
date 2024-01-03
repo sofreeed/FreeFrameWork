@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WdBuilding : WdBaseCluster
+public class WDBuilding : BaseWDCluster
 {
-    private bool isMainPlayer = false;
+    private bool _isMainPlayer = false;
 
     
 }

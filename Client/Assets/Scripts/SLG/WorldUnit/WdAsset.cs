@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WdAsset : WdBaseCluster
+public class WDAsset : BaseWDCluster
 {
-    private AssetType _assetType;
+    private ECTAsset _ectAsset;
     
     
 }

@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WdArmy : WdBaseCluster
+public enum EWDArmy
 {
-    private WdArmyType _wdArmyType;
+    Monster = 0,
+    Army
+}
 
-    public override void Init(float x, float y, float zoomBeginCameraHeight, float zoomEndCameraHeight, float zoomSize)
+public class WDArmy : BaseWDCluster
+{
+    private EWDArmy _wdArmyType;
+
+    public override void Init(EWDUnit type, float x, float y)
     {
-        base.Init(x, y, zoomBeginCameraHeight, zoomEndCameraHeight, zoomSize);
+        base.Init(type, x, y);
     }
 }
