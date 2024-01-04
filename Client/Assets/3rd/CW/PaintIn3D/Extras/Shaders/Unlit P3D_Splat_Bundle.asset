@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Paint in 3D/Unlit Splat
   target: {fileID: 4800000, guid: 79724bda94cda934aaea940afc61ad8e, type: 3}
-  variantHash: -400839692
-  projectHash: -284236704
+  variantHash: 1699993952
+  projectHash: -920296423
   variants:
   - Pipe: 0
     Code: "//<HASH>-400839692</HASH>\n////////////////////////////////////////\n//
