@@ -15,7 +15,7 @@ public enum EWorldLod
 public enum EWDUnit
 {
     MainCity = 0,
-    Building = 1,
+    Building,
     Asset,
     Army,
 }
@@ -29,15 +29,16 @@ public class WorldMgr : MonoBehaviour
 {
     public static WorldMgr Instance;
 
-    public static int SizeX = 512;
-    public static int SizeY = 512;
+    public static int SizeX = 24;
+    public static int SizeZ = 24;
 
+    public GameObject UnitRoot;
     public GameObject CameraRoot;
     public GameObject CameraGo;
     public Camera Camera;
 
     private readonly List<BaseWDUnit> _unitList = new(256); //根据可能的数量设置初始容量，避免自动扩容
-    private readonly Dictionary<EWDUnit, BaseWDUnit> _unitDict = new(256); //根据可能的数量设置初始容量，避免自动扩容
+    private readonly Dictionary<EWDUnit, List<BaseWDUnit>> _unitDict = new(256); //根据可能的数量设置初始容量，避免自动扩容
 
     private Dictionary<EWorldLod, float> _lodSetting;
 
@@ -63,25 +64,36 @@ public class WorldMgr : MonoBehaviour
         //_lodSetting.Add(LodLevel.World2, 400);
 
         //构建随机数据
-        CreateUnit(EWDUnit.MainCity, Random.Range(0, SizeX), Random.Range(0, SizeX));
+        //CreateUnit(EWDUnit.MainCity, Random.Range(0, SizeX), Random.Range(0, SizeX));
 
-        CreateUnit(EWDUnit.Building, Random.Range(0, SizeX), Random.Range(0, SizeX));
-        CreateUnit(EWDUnit.Building, Random.Range(0, SizeX), Random.Range(0, SizeX));
-        CreateUnit(EWDUnit.Building, Random.Range(0, SizeX), Random.Range(0, SizeX));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
 
-        CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
-        CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
-        CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
+        //CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
+        //CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
+        //CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
     }
 
     private void CreateUnit(EWDUnit type, float x, float y)
     {
-        GameObject prefab = Resources.Load<GameObject>("");
-        BaseWDUnit unit = prefab.GetComponent<BaseWDUnit>();
+        GameObject prefab = Resources.Load<GameObject>("Unit");
+        BaseWDUnit unit = prefab.InstantiateWithParent(UnitRoot.transform).GetComponent<BaseWDUnit>();
         unit.Init(type, x, y);
 
         _unitList.Add(unit);
-        _unitDict.Add(type, unit);
+        if (_unitDict.ContainsKey(type))
+        {
+            _unitDict[type].Add(unit);
+        }
+        else
+        {
+            List<BaseWDUnit> list = new();
+            list.Add(unit);
+            _unitDict.Add(type, list);
+        }
     }
 
     void Update()

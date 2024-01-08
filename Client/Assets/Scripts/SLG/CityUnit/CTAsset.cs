@@ -13,5 +13,5 @@ public enum ECTAsset
 
 public class CTAsset : BaseCTUnit
 {
-    private ECTAsset _ectAsset;
+    private ECTAsset _eCtAsset;
 }
