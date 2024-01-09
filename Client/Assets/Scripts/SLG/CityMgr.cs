@@ -12,7 +12,7 @@ public enum ECTUnit
 /// <summary>
 /// 相机达到一定高度，开始进入主城展开逻辑
 /// </summary>
-public class TownMgr : MonoBehaviour
+public class CityMgr : MonoBehaviour
 {
     public GameObject UnitRoot;
     public GameObject Prefab;

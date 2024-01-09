@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainScene : MonoBehaviour
 {
     private WorldMgr _worldMgr;
-    private TownMgr _townMgr;
+    private CityMgr _cityMgr;
     
     void Start()
     {

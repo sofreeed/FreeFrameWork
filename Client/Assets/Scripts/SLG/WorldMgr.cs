@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using HedgehogTeam.EasyTouch;
 using UnityEngine;
 
 public enum EWorldLod
@@ -12,6 +11,18 @@ public enum EWorldLod
     Level4, //山体换建模资源
 }
 
+public struct WorldLod
+{
+    public EWorldLod LodLevel;
+    public float CameraHeight;
+
+    public WorldLod(EWorldLod lod, float cameraHeight)
+    {
+        LodLevel = lod;
+        CameraHeight = cameraHeight;
+    }
+}
+
 public enum EWDUnit
 {
     MainCity = 0,
@@ -20,37 +31,33 @@ public enum EWDUnit
     Army,
 }
 
-/// <summary>
-/// 1.相机随鼠标滑动调整高度
-/// 2.随着相机高度调整，设置LOD
-/// 
-/// </summary>
 public class WorldMgr : MonoBehaviour
 {
     public static WorldMgr Instance;
 
-    public static int SizeX = 24;
-    public static int SizeZ = 24;
+    public const int SIZE_X = 24;
+    public const int SIZE_Z = 24;
 
     public GameObject UnitRoot;
     public GameObject CameraRoot;
     public GameObject CameraGo;
     public Camera Camera;
 
-    private readonly List<BaseWDUnit> _unitList = new(256); //根据可能的数量设置初始容量，避免自动扩容
-    private readonly Dictionary<EWDUnit, List<BaseWDUnit>> _unitDict = new(256); //根据可能的数量设置初始容量，避免自动扩容
+    private readonly List<BaseWDUnit> _unitList = new(256); 
+    private readonly Dictionary<EWDUnit, List<BaseWDUnit>> _unitDict = new(256); 
 
-    private Dictionary<EWorldLod, float> _lodSetting;
+    private List<WorldLod> _lodSetting = new(8);
 
     //private Map _map;
 
-    private float zoomMax = 128;
-    private float zoomMin = 16;
-    private float zoomCurrent = 34f;
-    private float zoomSpeed = 4;
+    private const float _ZOOM_MAX = 128;
+    private const float _ZOOM_MIN = 10;
+    private const float _ZOOM_SPEED = 4;
+    private const float _TOUCH_ZOOM_SPEED = 0.2f; 
+    private float _zoomCurrent = 30f;
 
-    public float perspectiveZoomSpeed = 0.0001f; // The rate of change of the field of view in perspective mode.
-
+    private Vector2 _mousePosOld = Vector2.zero;
+    private Vector3 _vCamRootPosOld = Vector3.zero;
 
     void Awake()
     {
@@ -59,22 +66,36 @@ public class WorldMgr : MonoBehaviour
 
     void Start()
     {
-        //_lodSetting = new Dictionary<LodLevel, float>(5);
-        //_lodSetting.Add(LodLevel.World1, 300);
-        //_lodSetting.Add(LodLevel.World2, 400);
+        _lodSetting.Add(new WorldLod(EWorldLod.Level0, 35));
+        _lodSetting.Add(new WorldLod(EWorldLod.Level1, 45));
+        _lodSetting.Add(new WorldLod(EWorldLod.Level2, 60));
 
         //构建随机数据
         //CreateUnit(EWDUnit.MainCity, Random.Range(0, SizeX), Random.Range(0, SizeX));
 
-        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
-        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
-        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
-        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
-        CreateUnit(EWDUnit.Building, Random.Range(-24, SizeX), Random.Range(-24, SizeZ));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SIZE_X), Random.Range(-24, SIZE_Z));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SIZE_X), Random.Range(-24, SIZE_Z));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SIZE_X), Random.Range(-24, SIZE_Z));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SIZE_X), Random.Range(-24, SIZE_Z));
+        CreateUnit(EWDUnit.Building, Random.Range(-24, SIZE_X), Random.Range(-24, SIZE_Z));
 
         //CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
         //CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
         //CreateUnit(EWDUnit.Asset, Random.Range(0, SizeX), Random.Range(0, SizeX));
+    }
+
+    void OnEnable()
+    {
+        EasyTouch.On_SwipeStart += OnSwipeStart;
+        EasyTouch.On_Swipe += OnSwipe;
+        EasyTouch.On_SwipeEnd += OnSwipeEnd;
+    }
+
+    void OnDisable()
+    {
+        EasyTouch.On_Swipe -= OnSwipe;
+        EasyTouch.On_SwipeStart -= OnSwipeStart;
+        EasyTouch.On_SwipeEnd -= OnSwipeEnd;
     }
 
     private void CreateUnit(EWDUnit type, float x, float y)
@@ -84,9 +105,9 @@ public class WorldMgr : MonoBehaviour
         unit.Init(type, x, y);
 
         _unitList.Add(unit);
-        if (_unitDict.ContainsKey(type))
+        if (_unitDict.TryGetValue(type, out var value))
         {
-            _unitDict[type].Add(unit);
+            value.Add(unit);
         }
         else
         {
@@ -98,9 +119,80 @@ public class WorldMgr : MonoBehaviour
 
     void Update()
     {
-        //TODO：调整相机高度，根据鼠标滚轮和触屏
-        //TODO：处理拖动平移相机
-        //TODO：处理建筑拾取、拖动和落城
-        //TODO：判断当前Lod级别，并通知全部建筑
+        //相机缩放-鼠标
+        if (true)
+        {
+            _zoomCurrent -= Input.GetAxis("Mouse ScrollWheel") * _ZOOM_SPEED;
+            _zoomCurrent = Mathf.Clamp(_zoomCurrent, _ZOOM_MIN, _ZOOM_MAX);
+            CameraGo.transform.localPosition = new Vector3(0, 0, -_zoomCurrent);
+        }
+
+        //相机缩放-触屏
+        if (Input.touchCount == 2)
+        {
+            // Store both touches.
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            // Find the position in the previous frame of each touch.
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            // Find the magnitude of the vector (the distance) between the touches in each frame.
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            // Find the difference in the distances between each frame.
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+            _zoomCurrent += deltaMagnitudeDiff * _TOUCH_ZOOM_SPEED;
+            _zoomCurrent = Mathf.Clamp(_zoomCurrent, _ZOOM_MIN, _ZOOM_MAX);
+            CameraGo.transform.localPosition = new Vector3(0, 0, -_zoomCurrent);
+        }
+
+        for (int i = 0; i < _lodSetting.Count; i++)
+        {
+            WorldLod lod = _lodSetting[i];
+            if (_zoomCurrent < lod.CameraHeight)
+            {
+                foreach (var unit in _unitList)
+                {
+                    unit.OnLodLevelChange(lod.LodLevel);
+                }
+
+                break;
+            }
+        }
+    }
+
+
+    private void OnSwipeStart(Gesture gesture)
+    {
+        _vCamRootPosOld = CameraRoot.transform.position;
+        _mousePosOld = gesture.position;
+    }
+
+    private void OnSwipe(Gesture gesture)
+    {
+        float f = _zoomCurrent / 34; //相机越高滑动越快
+        Vector2 vDelta = (gesture.position - _mousePosOld) * 0.008f * f;
+        CameraMove(vDelta);
+    }
+
+    private void OnSwipeEnd(Gesture gesture)
+    {
+    }
+
+    private void CameraMove(Vector2 vDelta)
+    {
+        //Vector3 vDelta = (Input.mousePosition - _mousePosOld) * 0.008f;
+        Vector3 vForward = CameraRoot.transform.forward;
+        vForward.y = 0.0f;
+        vForward.Normalize();
+        Vector3 vRight = CameraRoot.transform.right;
+        vRight.y = 0.0f;
+        vRight.Normalize();
+        Vector3 vMove = -vForward * vDelta.y + -vRight * vDelta.x;
+        CameraRoot.transform.position = _vCamRootPosOld + vMove;
     }
 }

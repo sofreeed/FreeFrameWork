@@ -5,14 +5,16 @@ using UnityEngine;
 
 public abstract class BaseWDCluster : BaseWDUnit
 {
+    private float _zoomHeightBegin = 30;
+    private float _zoomHeightEnd = 15;
+    private float _zoomSizeMin = 1;
+    private float _zoomSizeMax = 3;
+
+    private const float _CITY_TOWN_DISPLAY_HEIGHT = 0;
+
+
     private List<BaseCTUnit> _cityUnitList = new();
 
-    private float _zoomBeginCameraHeight = 0;
-    private float _zoomEndCameraHeight = 0;
-    private float _zoomCitySize = 1;
-    private float _zoomWorldSize = 3;
-
-    private float _cityTownDisplayHeight = 0;
 
     public override void Init(EWDUnit type, float x, float y)
     {
@@ -28,12 +30,12 @@ public abstract class BaseWDCluster : BaseWDUnit
         if (_lastWorldLod != EWorldLod.Level0)
             return;
 
-        float camerHeight = WorldMgr.Instance.Camera.transform.position.y;
+        float cameraHeight = WorldMgr.Instance.Camera.transform.position.y;
 
         //城墙出现
-        bool isTownView = !(camerHeight > _cityTownDisplayHeight);
+        bool isTownView = !(cameraHeight > _CITY_TOWN_DISPLAY_HEIGHT);
 
-        if (camerHeight > _zoomBeginCameraHeight)
+        if (cameraHeight > _zoomHeightBegin)
         {
             //正常-高度还没到
             return;
@@ -42,10 +44,10 @@ public abstract class BaseWDCluster : BaseWDUnit
         //建筑缩放
         foreach (BaseCTUnit unit in _cityUnitList)
         {
-            float currZoomHeight = _zoomBeginCameraHeight - camerHeight;
-            float totalZoomHeight = _zoomBeginCameraHeight - _zoomEndCameraHeight;
+            float currZoomHeight = _zoomHeightBegin - cameraHeight;
+            float totalZoomHeight = _zoomHeightBegin - _zoomHeightEnd;
             float t = currZoomHeight / totalZoomHeight;
-            float currZoom = Mathf.Lerp(_zoomWorldSize, _zoomCitySize, t);
+            float currZoom = Mathf.Lerp(_zoomSizeMax, _zoomSizeMin, t);
             unit.transform.localScale = new Vector3(currZoom, currZoom, currZoom);
         }
 
